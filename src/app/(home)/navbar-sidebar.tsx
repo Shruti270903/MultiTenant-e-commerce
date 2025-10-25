@@ -31,13 +31,14 @@ export const NavbarSidebar = ({ items, open, onOpenChange }: props) => {
               key={item.href}
               href={item.href}
               className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+              onClick={()=>onOpenChange(false)}
             >
               {item.chilren}
             </Link>
           ))}
           <div className="border-t">
             <Link
-              onClick={() => onOpenChange(true)}
+              onClick={() => onOpenChange(false)}
               href="/sign-up"
               className=" w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
             >
@@ -45,9 +46,9 @@ export const NavbarSidebar = ({ items, open, onOpenChange }: props) => {
             </Link>
 
             <Link
-              onClick={() => onOpenChange(true)}
+              onClick={() => onOpenChange(false)}
               href="/sign-up"
-              className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+              className=" w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
             >
               Start Selling
             </Link>

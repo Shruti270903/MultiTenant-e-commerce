@@ -1,33 +1,18 @@
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { Textarea } from "@/components/ui/textarea";
-import { useEffect } from "react";
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
 
- export default function Home() {
-    // useEffect(() => {
-    //     console.log("Home page loaded, rendered");    
-    // }, []);
+
+// https://localhost:3000/admin
+export default async function Home() {
+  const payload = await getPayload({
+      config: configPromise,
+    })
+    const data = await payload.find({
+      collection:"categories" as any
+    })
   return (
-    <div className="p-4">
-      <div className="flex flex-col gap-y-4  ">
-        <div>
-          <Button variant="elevated">I am a button</Button>
-        </div>
-        <div>
-          <input className="h-full w-full border-2 rounded " placeholder="i am a input"/>
-        </div>
-        <div>
-          <Progress value={60} />
-        </div>
-        <div>
-          <textarea  className="border-2 w-full rounded" placeholder="i am a textarea"/>   
-            </div>
-        <div>
-          <Checkbox />
-        </div>
-      </div>
+    <div>
+{JSON.stringify(data, null, 2)}
     </div>
   );
 }

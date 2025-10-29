@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "types": "bunx --bun payload generate:types --disable-transpile"
+    "types": "bunx --bun payload generate:types --disable-transpile",
+        "generate:types": "payload generate:types",
+  "db:fresh": "payload migrate:fresh",
+    "db:seed": "bun run src/seed",
+    "db:reset": "bun run db:reset"
+    
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

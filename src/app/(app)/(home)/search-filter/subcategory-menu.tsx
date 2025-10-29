@@ -1,7 +1,8 @@
 import type { Category } from "@/payload-types";
 import Link from "next/link"
+import { CustomCategory } from "../types";
 interface Props{
-    category: Category;
+    category: CustomCategory;
     isOpen:boolean;
     position:{top:number; left:number};
 }
@@ -28,13 +29,14 @@ return (
         style={{backgroundColor}}
         className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-2px -translate-y-2px ">
             <div>
-        {category.subcategories?.map((SubcategoryMenu:Category)=>(
+        {category.subcategories?.map((Subcategory:Category)=>(
             <Link  
-            key={SubcategoryMenu.slug}
-            href="/"
+            key={Subcategory.slug}
+            //http://localhost:3000/music/music-theory
+            href={`/${category.slug}/${Subcategory.slug}`}
             className="w-full text-left p-4 hover:bg-black hover:text-white flex justify-between items-center underline font-medium"
             >
-                {SubcategoryMenu.name}
+                {Subcategory.name}
             </Link>
         ))}
             </div>

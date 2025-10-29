@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { NavbarSidebar } from "./navbar-sidebar";
 import { Children, useState } from "react";
 import { MenuIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -65,7 +66,7 @@ const Navbar = () => {
           </NavbarItem>
         ))}
       </div>
-      <div className="hidden lg:flex">
+      <div className="hidden lg:flex ">
         <Button
           asChild
           variant="secondary"

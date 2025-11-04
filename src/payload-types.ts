@@ -246,6 +246,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  id:string;
+  username?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

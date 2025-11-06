@@ -15,13 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useTRPC } from "@/trpc/client";
 import { loginSchema, registerSchema } from "../../schemas";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
-
+import { useTRPC } from "@/trpc/client";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["700"],
@@ -29,31 +27,29 @@ const poppins = Poppins({
 export const SignInView = () => {
   const router = useRouter();
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const login = useMutation(
     trpc.auth.login.mutationOptions({
       onError: (error) => {
         toast.error(error.message);
       },
-      onSuccess: () => {
+      onSuccess: async() => {
+      await  queryClient.invalidateQueries(trpc.auth.session.queryFilter());
         router.push("/");
       },
     })
   );
-
   const form = useForm<z.infer<typeof loginSchema>>({
     mode: "all",
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
-    //   username: "",
     },
   });
-
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
     login.mutate(values);
   };
- 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
       <div className="bg-[#F4F4F0] h-screen w-full lg:col-span-3 overflow-y-auto">
@@ -76,19 +72,17 @@ export const SignInView = () => {
                 size="sm"
                 className="text-base border-none underline"
               >
-                <Link prefetch href="/sign-up">
+                <Link href="/sign-up" prefetch>
                   Sign up
                 </Link>
               </Button>
             </div>
-            <h1 className="text-4xl font-medium">
-           Welcome back to funroad.
-            </h1>
+            <h1 className="text-4xl font-medium">Welcome back to funroad.</h1>
             <FormField
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base ">Email</FormLabel>
+                  <FormLabel className="text-base">Email</FormLabel>
                   <FormControl>
                     <Input {...field} type="email" />
                   </FormControl>
@@ -100,7 +94,7 @@ export const SignInView = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base ">Password</FormLabel>
+                  <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>

@@ -1,6 +1,12 @@
 import { SignUpView } from "@/modules/auth/ui/views/sign-up-views";
+import { caller } from "@/trpc/server";
+import { redirect } from "next/navigation";
+const Page=async()=>{
+        const session = await caller.auth.session();
 
-const Page=()=>{
+        if(session.user){
+                redirect("/");
+            }
     return <SignUpView/>
 }
 export default Page;

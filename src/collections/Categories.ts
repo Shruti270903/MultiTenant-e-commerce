@@ -2,10 +2,9 @@ import type { CollectionConfig } from "payload";
 
 const Categories: CollectionConfig={
     slug:"categories" ,
-    // access:{
-    // create:()=>false,
-    // update:()=>false,
-    // },                               //block update and creating categories section in admin/collection/categories area
+  admin:{
+   useAsTitle:"name",
+  },
     fields:[
         {
             name:"name",

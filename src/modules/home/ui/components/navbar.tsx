@@ -11,10 +11,10 @@ import { Input } from "@/components/ui/input";
 import { useTRPC } from "@/trpc/client";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["700"],
-});
+// const poppins = Poppins({
+//   subsets: ["latin"],
+//   weight: ["700"],
+// });
 interface NavbarItemsProps {
   href: string;
   children: React.ReactNode;
@@ -52,9 +52,13 @@ const Navbar = () => {
   return (
     <nav className="h-20 flex border-b justify-between font-medium bg-white">
       <Link href="/" className="pl-6 flex items-center">
-        <span className={cn("text-5xl font-semibold", poppins.className)}>
+        {/* <span className={cn("text-5xl font-semibold", poppins.className)}>
           funroad
-        </span>
+        </span> */}
+        <span className="text-5xl font-semibold">
+  funroad
+</span>
+
       </Link>
       <NavbarSidebar
         items={navbarItems}

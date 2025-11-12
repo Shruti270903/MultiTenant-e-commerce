@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useProductFilters } from "../../hooks/use-product-filter";
 import { valueFromAST } from "graphql";
 import { useState } from "react";
-
+import { TagsFilter } from "./tags-filter";
 interface ProductFiltersProps {
   title: string;
   className?: string;
@@ -31,8 +31,28 @@ const Icon = isOpen ? ChevronDownIcon : ChevronRightIcon;
 );
 };
 export const ProductFilters=()=>{
-  const [filters, setFilters, resetFilter] = useProductFilters();
+  const [filters, setFilters] = useProductFilters();
 
+  const hasAnyFilters = Object.entries(filters).some(([key, value])=>{
+
+    if(key === "sort") return false;
+
+     if(Array.isArray(value)){
+      return value.length > 0;
+     }
+
+    if(typeof value === "string"){
+      return value !== "" ; 
+    }
+    return value !== null;
+  });
+  const onClear=()=>{
+    setFilters({
+      minPrice:"",
+      maxPrice:"",
+      tags:[],
+    });
+  };
   const onChange = (key:keyof typeof filters, value:unknown)=>{
     setFilters({...filters, [key]: value});
   };
@@ -40,16 +60,25 @@ export const ProductFilters=()=>{
     <div className="border rounded-md bg-white">
       <div className="p-4 border-b flex items-center justify-between">
         <p className="font-medium">Filters</p>
-        <button className="underline " onClick={resetFilter} type="button">
+        {hasAnyFilters &&(
+           <button className="underline cursor-pointer" onClick={()=>onClear()} type="button">
           Clear
         </button>
+        )}
+       
       </div>
-      <ProductFilter title="price" className="border-b-0">
+      <ProductFilter title="Price"  > 
       <PriceFilter 
       minPrice={filters.minPrice}
       maxPrice={filters.maxPrice}
       onMinPriceChange={(value)=> onChange("minPrice", value)}
       onMaxPriceChange={(value)=> onChange("maxPrice", value)}
+      />
+      </ProductFilter>
+       <ProductFilter title="Tags" className="border-b-0" >
+      <TagsFilter 
+      value={filters.tags}
+      onChange={(value)=> onChange("tags", value)}
       />
       </ProductFilter>
     </div>

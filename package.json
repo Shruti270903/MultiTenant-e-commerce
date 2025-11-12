@@ -12,7 +12,7 @@
     "db:fresh": "payload migrate:fresh",
     "db:seed": "bun run src/seed",
     "db:reset": "bun run db:reset"
-  },
+  },  
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@payloadcms/db-mongodb": "^3.61.1",

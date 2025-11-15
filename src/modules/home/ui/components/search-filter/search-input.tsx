@@ -43,7 +43,7 @@ export const SearchInput = ({
         asChild
         variant="elevated"
         >
-<Link href="/library">
+<Link href="./library">
 <BookmarkCheckIcon className="mr-2"/>
 </Link>
         </Button>

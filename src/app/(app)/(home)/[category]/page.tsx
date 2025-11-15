@@ -10,6 +10,7 @@ import type { SearchParams } from "nuqs/server";
 import { loadProductFilters } from "@/modules/products/search-params";
 import { ProductSort } from "@/modules/products/ui/components/product-sort";
 import {ProductListView} from "@/modules/products/ui/views/product-list-view";
+import { DEFAULT_LIMIT } from "@/constants";
 
 interface Props {
   params: Promise<{
@@ -23,9 +24,10 @@ const Page = async ({ params, searchParams }: Props) => {
 
   const {minPrice, maxPrice} = await searchParams; 
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({
+  void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({
+    ...filters,
       category,
-     ...filters,
+      limit: DEFAULT_LIMIT,
     })
   );
   return (

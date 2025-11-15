@@ -36,20 +36,36 @@ export const authRouter = createTRPCRouter({
       });
 
       const existingUser = existingData.docs[0];
+ 
       if (existingUser) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Username already taken",
         });
       }
+
+      const tenant = await ctx.db.create({
+        collection:"tenants",
+        data:{
+          name: input.username,
+          slug:input.username,
+          // email: input.email,
+          stripeAccountId:"test"
+        }
+      })
       await ctx.db.create({
         collection: "users",
         data: {
           email: input.email,
           username: input.username,
           password: input.password, // TODO: Hash password before saving
-        },
-      });
+tenants:[
+  {
+    tenant: tenant.id,
+     },
+   ],
+ },
+});
       return { success: true };
     }),
 
@@ -86,6 +102,9 @@ export const authRouter = createTRPCRouter({
       prefix:ctx.db.config.cookiePrefix,
       value:data.token
     });
+
+
+
     return data;
   }),
 });

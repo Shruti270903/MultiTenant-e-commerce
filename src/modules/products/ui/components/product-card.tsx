@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { StarIcon } from "lucide-react";
-import { generateTenantURL } from "@/lib/utils";
+import { generateTenantURL } from "@/hooks/lib/utils";
 interface ProductCardProps {
   id: string;
   name: string;
@@ -24,14 +24,14 @@ export const ProductCard = ({
   reviewCount,
   price,
 }: ProductCardProps) => {
-const router = useRouter();
+  const router = useRouter();
 
-const handleUserClick = (e: React.MouseEvent<HTMLDivElement>)=>{
-  e.preventDefault();
-  e.stopPropagation();
+  const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  router.push(generateTenantURL(tenantSlug));
-};
+    router.push(generateTenantURL(tenantSlug));
+  };
 
   return (
     <Link href={`/products${id}`}>

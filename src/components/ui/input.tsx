@@ -1,6 +1,6 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/hooks/lib/utils";
 
 // Define Input style variants
 const inputVariants = cva(
@@ -23,7 +23,7 @@ const inputVariants = cva(
       size: "default",
     },
   }
-)
+);
 
 function Input({
   className,
@@ -39,7 +39,7 @@ function Input({
       className={cn(inputVariants({ variant, size, className }))}
       {...props}
     />
-  )
+  );
 }
 
-export { Input, inputVariants }
+export { Input, inputVariants };

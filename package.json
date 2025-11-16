@@ -2,6 +2,7 @@
   "name": "multitenant",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +11,7 @@
     "types": "bunx --bun payload generate:types --disable-transpile",
     "generate:types": "payload generate:types",
     "db:fresh": "payload migrate:fresh",
-  "db:seed": "payload run src/seed.ts",
+    "db:seed": "payload run src/seed.ts",
     "db:reset": "bun run db:reset"
   },
   "dependencies": {
@@ -88,6 +89,6 @@
     "eslint-config-next": "15.2.4",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.16",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   }
 }

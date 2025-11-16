@@ -108,9 +108,7 @@ export const productsRouter = createTRPCRouter({
         page: input.cursoor,
         limit: input.limit,
       });
-
       console.log(JSON.stringify(data.docs, null, 2))
-
       return {
         ...data,
         docs: data.docs.map((doc)=>({
@@ -118,7 +116,6 @@ export const productsRouter = createTRPCRouter({
           image: doc.image as Media | null,
           tenant: doc.tenant as Tenant & {Image: Media | null},
         }))
-
       };
     }),
 });

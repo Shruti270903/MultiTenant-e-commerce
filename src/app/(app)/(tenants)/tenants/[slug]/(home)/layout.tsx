@@ -8,7 +8,6 @@ interface LayoutProps {
     children: React.ReactNode;
     params: Promise<{slug:string}>;
 }
-
 const Layout =async ({children, params}: LayoutProps)=>{
     const {slug} = await params;
 

@@ -15,7 +15,8 @@
 // import { Input } from "@/components/ui/input";
 // import { Button } from "@/components/ui/button";
 // import Link from "next/link";
-// import { cn } from "@/lib/utils";
+// // import { cn } from "@/lib/utils";
+// import { cn } from "@/hooks/lib/utils";
 // import { useTRPC } from "@/trpc/client";
 // import { registerSchema } from "../../schemas";
 // import { useMutation } from "@tanstack/react-query";
@@ -157,7 +158,6 @@
 //   );
 // };
 
-
 "use client";
 
 import {
@@ -176,7 +176,7 @@ import { Poppins } from "next/font/google";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/hooks/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { registerSchema } from "../../schemas";
 import { useMutation } from "@tanstack/react-query";
@@ -235,7 +235,9 @@ export const SignUpView = () => {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <Link href="/">
-                <span className={cn("text-2xl font-semibold", poppins.className)}>
+                <span
+                  className={cn("text-2xl font-semibold", poppins.className)}
+                >
                   funroad
                 </span>
               </Link>

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn } from "@/hooks/lib/utils";
 import { Button } from "@/components/ui/button";
 import { NavbarSidebar } from "./navbar-sidebar";
 import { Children, useState } from "react";
@@ -55,10 +55,7 @@ const Navbar = () => {
         {/* <span className={cn("text-5xl font-semibold", poppins.className)}>
           funroad
         </span> */}
-        <span className="text-5xl font-semibold">
-  funroad
-</span>
-
+        <span className="text-5xl font-semibold">funroad</span>
       </Link>
       <NavbarSidebar
         items={navbarItems}

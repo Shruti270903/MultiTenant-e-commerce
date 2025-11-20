@@ -3,7 +3,6 @@
 import { ChangeEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 interface Props {
   minPrice?: string | null;
   maxPrice?: string | null;
@@ -11,7 +10,6 @@ interface Props {
   onMinPriceChange: (value: string) => void;
   onMaxPriceChange: (value: string) => void;
 }
-
 export const formatAsCurrency = (value: string) => {
   const numericValue = value.replace(/[^0-9.]/g, "");
 

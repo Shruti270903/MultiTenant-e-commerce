@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/hooks/lib/utils";
+import { cn } from "@/lib/utils";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { Children } from "react";
 import { PriceFilter } from "./price-filter";

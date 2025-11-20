@@ -1,11 +1,32 @@
-import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import z from "zod";
-import type { Sort, Where } from "payload";
-import { Category, Media } from "@/payload-types";
+import { Sort, Where } from "payload";
+import { DEFAULT_LIMIT } from "@/constants";
+import { Category, Media, Tenant } from "@/payload-types";
+
+import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+
 import { sortValues } from "../search-params";
-import {DEFAULT_LIMIT} from "@/constants";
 
 export const productsRouter = createTRPCRouter({
+  getOne: baseProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const product = await ctx.db.findByID({
+        collection: "products",
+        id: input.id,
+        depth: 2, // Load the "product.image", "product.tenant", and "product.tenant.image"
+      });
+
+      return {
+        ...product,
+        image: product.image as Media | null,
+        tenant: product.tenant as Tenant & { image: Media | null },
+      };
+    }),
   getMany: baseProcedure
     .input(
       z.object({
@@ -17,25 +38,27 @@ export const productsRouter = createTRPCRouter({
         tags: z.array(z.string()).nullable().optional(),
         sort: z.enum(sortValues).nullable().optional(),
         tenantSlug: z.string().nullable().optional(),
-      }),
+      })
     )
     .query(async ({ ctx, input }) => {
       const where: Where = {};
+
       let sort: Sort = "-createdAt";
 
       if (input.sort === "curated") {
         sort = "-createdAt";
       }
+
       if (input.sort === "hot_and_new") {
         sort = "+createdAt";
       }
+
       if (input.sort === "trending") {
         sort = "-createdAt";
       }
 
       if (input.minPrice && input.maxPrice) {
         where.price = {
-          ...where.price,
           greater_than_equal: input.minPrice,
           less_than_equal: input.maxPrice,
         };
@@ -48,22 +71,18 @@ export const productsRouter = createTRPCRouter({
           less_than_equal: input.maxPrice,
         };
       }
-      if (input.maxPrice) {
-        where.price = {
-          ...where.price,
-          less_than_equal: input.maxPrice,
+
+      if (input.tenantSlug) {
+        where["tenant.slug"] = {
+          equals: input.tenantSlug,
         };
       }
-           if(input.tenantSlug){
-            where["tenant.slug"] = {
-              equals: input.tenantSlug,
-            };
-           } 
+
       if (input.category) {
         const categoriesData = await ctx.db.find({
           collection: "categories",
           limit: 1,
-          depth: 1, //populate subcategories, subcategories.[0] will be  a type of "Category"
+          depth: 1, // Because of 'depth: 1' we are confident doc will be a type of "Category"
           pagination: false,
           where: {
             slug: {
@@ -72,18 +91,18 @@ export const productsRouter = createTRPCRouter({
           },
         });
 
-        // console.log(JSON.stringify(categoriesData, null, 2));
-
         const formattedData = categoriesData.docs.map((doc) => ({
           ...doc,
           subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
+            // Because of 'depth: 1' we are confident doc will be a type of "Category"
             ...(doc as Category),
-            // subcategories: undefined, // prevent nesting loops
+            subcategories: undefined,
           })),
         }));
 
         const subcategoriesSlugs = [];
         const parentCategory = formattedData[0];
+
         if (parentCategory) {
           subcategoriesSlugs.push(
             ...parentCategory.subcategories.map(
@@ -95,27 +114,29 @@ export const productsRouter = createTRPCRouter({
           };
         }
       }
-      if(input.tags && input.tags.length > 0) {
+
+      if (input.tags && input.tags.length > 0) {
         where["tags.name"] = {
           in: input.tags,
         };
       }
+
       const data = await ctx.db.find({
         collection: "products",
-        depth: 2, //populate "category" & "image", "tenant" & "tenant.image"
+        depth: 2, // Populate "category", "image" and "tenant & tenant.images"
         where,
         sort,
-        page: input.cursoor,
+        page: input.cursor,
         limit: input.limit,
       });
-      console.log(JSON.stringify(data.docs, null, 2))
+
       return {
         ...data,
-        docs: data.docs.map((doc)=>({
+        docs: data.docs.map((doc) => ({
           ...doc,
           image: doc.image as Media | null,
-          tenant: doc.tenant as Tenant & {Image: Media | null},
-        }))
+          tenant: doc.tenant as Tenant & { image: Media | null },
+        })),
       };
     }),
 });

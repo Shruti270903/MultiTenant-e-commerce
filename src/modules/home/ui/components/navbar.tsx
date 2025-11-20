@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { cn } from "@/hooks/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { NavbarSidebar } from "./navbar-sidebar";
 import { Children, useState } from "react";

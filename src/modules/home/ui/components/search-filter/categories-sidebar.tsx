@@ -1,16 +1,20 @@
+"use client"
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useTRPC } from "@/trpc/client";
-// import { CustomCategory } from "../types";
-import { useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 interface Props {
   open: boolean;

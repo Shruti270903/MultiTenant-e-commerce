@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/hooks/lib/utils";
+import { cn } from "@/lib/utils";
 
 // Define Input style variants
 const inputVariants = cva(

@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Poppins } from "next/font/google";
-import { cn } from "@/hooks/lib/utils";
-
-const poppins = Poppins({
+import { cn } from "@/lib/utils";
+// import { Footer } from "@/modules/home/ui/components/footer";
+export const poppins = Poppins({
   subsets: ["latin"],
   weight: ["700"],
 });
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="border-t font-medium bg-white">
       <div className="max-w-(--breakpoint-xl) mx-auto flex  items-center py-6 h-full px-4 gap-2 lg:px-12">
@@ -22,4 +22,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+

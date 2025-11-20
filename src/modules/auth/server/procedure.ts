@@ -1,14 +1,15 @@
-import { headers as getHeaders} from "next/headers";
-import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-// import { AUTH_COOKIE } from "../constants";
+import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+
+import { headers as getHeaders} from "next/headers";
+
 import { loginSchema, registerSchema } from "../schemas";
 import { generateAuthCookie } from "../utils";
 
 export const authRouter = createTRPCRouter({
-  // --- SESSION ---
-  session: baseProcedure.query(async ({ ctx }) => {
+  session: baseProcedure.query(async ({ ctx }) => {    // --- SESSION ---
     const headers = await getHeaders();
+
     const session = await ctx.db.auth({ headers });
 
     return session;
@@ -20,9 +21,7 @@ export const authRouter = createTRPCRouter({
   //   cookies.delete(AUTH_COOKIE);
   //   return { success: true };
   // }),
-
-  // --- REGISTER ---
-  register: baseProcedure
+  register: baseProcedure  // --- REGISTER ---
     .input(registerSchema)
     .mutation(async ({ input, ctx }) => {
       const existingData = await ctx.db.find({
@@ -51,14 +50,14 @@ export const authRouter = createTRPCRouter({
           slug:input.username,
           // email: input.email,
           stripeAccountId:"test"
-        }
-      })
+        },
+      });
       await ctx.db.create({
         collection: "users",
         data: {
           email: input.email,
           username: input.username,
-          password: input.password, // TODO: Hash password before saving
+          password: input.password, //! TODO: Hash password before saving
 tenants:[
   {
     tenant: tenant.id,
@@ -66,11 +65,30 @@ tenants:[
    ],
  },
 });
-      return { success: true };
-    }),
+    //   return { success: true };
+    // }),
+    const data = await ctx.db.login({
+        collection: "users",
+        data: {
+          email: input.email,
+          password: input.password,
+        },
+      });
 
-  // --- LOGIN ---
-  login: baseProcedure.input(loginSchema).mutation(async ({ input, ctx }) => {
+      if (!data.token) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Failed to login",
+        });
+      }
+
+      await generateAuthCookie({
+        prefix: ctx.db.config.cookiePrefix,
+        value: data.token,
+      });
+    }),
+ 
+  login: baseProcedure.input(loginSchema).mutation(async ({ input, ctx }) => {     // --- LOGIN ---
     const data = await ctx.db.login({
       collection: "users",
       data: {
@@ -79,32 +97,16 @@ tenants:[
       },
     });
 
-    if (!data?.token) {
+    if (!data.token) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
         message: "Failed to login",
       });
     }
-
-    // http://localhost:3004/
-    
-    // const cookies = await getCookies();
-    // cookies.set({
-    //   name: `${ctx.db.config.cookiePrefix}-token`,  //payload token by default
-    //   value: data.token,
-    //   httpOnly: true,
-    //   path: "/",
-    //   // sameSite: "none",
-    //   // domain: ".funroad.com", // if needed for cross-subdomain auth
-    // });
-
     await generateAuthCookie({
       prefix:ctx.db.config.cookiePrefix,
       value:data.token
     });
-
-
-
     return data;
   }),
 });

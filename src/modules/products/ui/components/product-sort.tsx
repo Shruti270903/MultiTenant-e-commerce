@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/hooks/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 import { useProductFilters } from "../../hooks/use-product-filter";
@@ -48,4 +48,3 @@ export const ProductSort = () => {
     </div>
   );
 };
-

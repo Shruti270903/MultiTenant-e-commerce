@@ -1,165 +1,4 @@
-// "use client";
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import z from "zod";
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { Poppins } from "next/font/google";
-// import { Input } from "@/components/ui/input";
-// import { Button } from "@/components/ui/button";
-// import Link from "next/link";
-// // import { cn } from "@/lib/utils";
-// import { cn } from "@/hooks/lib/utils";
-// import { useTRPC } from "@/trpc/client";
-// import { registerSchema } from "../../schemas";
-// import { useMutation } from "@tanstack/react-query";
-// import { toast } from "sonner";
-// import { useRouter } from "next/navigation";
-// import { useQuery, useQueryClient } from '@tanstack/react-query';
-
-// const poppins = Poppins({
-//   subsets: ["latin"],
-//   weight: ["700"],
-// });
-// export const SignUpView = () => {
-//   const router = useRouter();
-//   const trpc = useTRPC();
-//    const queryClient = useQueryClient();
-//   const register = useMutation(
-//     trpc.auth.register.mutationOptions({
-//       onError: (error) => {
-//         toast.error(error.message);
-//       },
-//       onSuccess: async() => {
-//               await  queryClient.invalidateQueries(trpc.auth.session.queryFilter());
-//         router.push("/");
-//       },
-//     })
-//   );
-
-//   const form = useForm<z.infer<typeof registerSchema>>({
-//     mode: "all",
-//     resolver: zodResolver(registerSchema),
-//     defaultValues: {
-//       email: "",
-//       password: "",
-//       username: "",
-//     },
-//   });
-
-//   const onSubmit = (values: z.infer<typeof registerSchema>) => {
-//     register.mutate(values);
-//   };
-//   const username = form.watch("username");
-//   const usernameErrors = form.formState.errors.username;
-
-//   const showPreview = username && !usernameErrors;
-//   return (
-//     <div className="grid grid-cols-1 lg:grid-cols-5">
-//       <div className="bg-[#F4F4F0] h-screen w-full lg:col-span-3 overflow-y-auto">
-//         <Form {...form}>
-//           <form
-//             onSubmit={form.handleSubmit(onSubmit)}
-//             className="flex flex-col gap-8 p-4 lg:p-16"
-//           >
-//             <div className="flex items-center justify-between mb-8">
-//               <Link href="/">
-//                 <span
-//                   className={cn("text-2xl font-semibold", poppins.className)}
-//                 >
-//                   funroad
-//                 </span>
-//               </Link>
-//               <Button
-//                 asChild
-//                 variant="ghost"
-//                 size="sm"
-//                 className="text-base border-none underline"
-//               >
-//                 <Link prefetch href="/sign-in">
-//                   Sign in
-//                 </Link>
-//               </Button>
-//             </div>
-//             <h1 className="text-4xl font-medium">
-//               join over 1,580 creators earning money on Funroad.
-//             </h1>
-//             <FormField
-//               name="username"
-//               render={({ field }) => (
-//                 <FormItem>
-//                   <FormLabel className="text-base ">Username</FormLabel>
-//                   <FormControl>
-//                     <Input {...field} />
-//                   </FormControl>
-//                   <FormDescription
-//                     className={cn("hidden", showPreview && "block")}
-//                   >
-//                     Your store will be available at&nbsp;
-//                     {/* TODO: use proper method to generate preview url */}
-//                     <strong>{username}</strong>.shop.com
-//                   </FormDescription>
-//                   <FormMessage />
-//                 </FormItem>
-//               )}
-//             />
-//             <FormField
-//               name="email"
-//               render={({ field }) => (
-//                 <FormItem>
-//                   <FormLabel className="text-base ">Email</FormLabel>
-//                   <FormControl>
-//                     <Input {...field} type="email" />
-//                   </FormControl>
-//                   <FormMessage />
-//                 </FormItem>
-//               )}
-//             />
-//             <FormField
-//               name="password"
-//               render={({ field }) => (
-//                 <FormItem>
-//                   <FormLabel className="text-base ">Password</FormLabel>
-//                   <FormControl>
-//                     <Input {...field} type="password" />
-//                   </FormControl>
-//                   <FormMessage />
-//                 </FormItem>
-//               )}
-//             />
-//             <Button
-//               disabled={register.isPending}
-//               type="submit"
-//               size="lg"
-//               variant="elevated"
-//               className="bg-black text-white hover:bg-pink-400 hover:text-primary"
-//             >
-//               Create Account
-//             </Button>
-//           </form>
-//         </Form>
-//       </div>
-//       <div
-//         className="h-screen w-full lg:col-span-2 hidden lg:block"
-//         style={{
-//           backgroundImage: "url('/auth-bg.png')",
-//           backgroundSize: "cover",
-//           backgroundPosition: "center",
-//         }}
-//       />
-//     </div>
-//   );
-// };
-
 "use client";
-
 import {
   Form,
   FormControl,
@@ -169,20 +8,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import z from "zod";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Poppins } from "next/font/google";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { cn } from "@/hooks/lib/utils";
+import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
-import { registerSchema } from "../../schemas";
+// import { registerSchema } from "../../schemas/registerSchema";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { registerSchema } from "../../schemas";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -193,7 +33,6 @@ export const SignUpView = () => {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-
   const register = useMutation(
     trpc.auth.register.mutationOptions({
       onError: (error) => {
@@ -212,17 +51,17 @@ export const SignUpView = () => {
     defaultValues: {
       email: "",
       password: "",
-      username: "",
+      name: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    register.mutate(values);
+    register.mutate(values); // now backend receives "name"
   };
 
-  const username = form.watch("username");
-  const usernameErrors = form.formState.errors.username;
-  const showPreview = username && !usernameErrors;
+  const name = form.watch("name");
+  const nameError = form.formState.errors.name;
+  const showPreview = name && !nameError;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
@@ -235,101 +74,70 @@ export const SignUpView = () => {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <Link href="/">
-                <span
-                  className={cn("text-2xl font-semibold", poppins.className)}
-                >
+                <span className={cn("text-2xl font-semibold", poppins.className)}>
                   funroad
                 </span>
               </Link>
-
               <Button
                 asChild
                 variant="ghost"
                 size="sm"
                 className="text-base border-none underline"
               >
-                <Link prefetch href="/sign-in">
-                  Sign in
-                </Link>
+                <Link prefetch href="/sign-in">Sign in</Link>
               </Button>
             </div>
 
             <h1 className="text-4xl font-medium">
-              Join over 1,580 creators earning money on Funroad.
+              join over 1,580 creators earning money on Funroad.
             </h1>
 
-            {/* Username */}
+            {/* Name */}
             <FormField
-              name="username"
-              render={({ field }) => {
-                const id = "username-field";
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base">Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
 
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor={id} className="text-base">
-                      Username
-                    </FormLabel>
+                  <FormDescription className={cn("hidden", showPreview && "block")}>
+                    Your store will be available at{" "}
+                    <strong>{name}</strong>.shop.com
+                  </FormDescription>
 
-                    <FormControl>
-                      <Input id={id} {...field} />
-                    </FormControl>
-
-                    <FormDescription
-                      id={`${id}-description`}
-                      className={cn("hidden", showPreview && "block")}
-                    >
-                      Your store will be available at{" "}
-                      <strong>{username}</strong>.shop.com
-                    </FormDescription>
-
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+                  <FormMessage />
+                </FormItem>
+              )}
             />
 
             {/* Email */}
             <FormField
               name="email"
-              render={({ field }) => {
-                const id = "email-field";
-
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor={id} className="text-base">
-                      Email
-                    </FormLabel>
-
-                    <FormControl>
-                      <Input id={id} type="email" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base">Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="email" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
 
             {/* Password */}
             <FormField
               name="password"
-              render={({ field }) => {
-                const id = "password-field";
-
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor={id} className="text-base">
-                      Password
-                    </FormLabel>
-
-                    <FormControl>
-                      <Input id={id} type="password" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base">Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
 
             {/* Submit */}
@@ -358,3 +166,204 @@ export const SignUpView = () => {
     </div>
   );
 };
+
+// "use client";
+
+// import {
+//   Form,
+//   FormControl,
+//   FormDescription,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import z from "zod";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { Poppins } from "next/font/google";
+// import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
+// import Link from "next/link";
+// import { cn } from "@/lib/utils";
+// import { useTRPC } from "@/trpc/client";
+// import { registerSchema } from "../../schemas";
+// import { useMutation } from "@tanstack/react-query";
+// import { toast } from "sonner";
+// import { useRouter } from "next/navigation";
+// import { useQueryClient } from "@tanstack/react-query";
+
+// const poppins = Poppins({
+//   subsets: ["latin"],
+//   weight: ["700"],
+// });
+
+// export const SignUpView = () => {
+//   const router = useRouter();
+//   const trpc = useTRPC();
+//   const queryClient = useQueryClient();
+
+//   const register = useMutation(
+//     trpc.auth.register.mutationOptions({
+//       onError: (error) => {
+//         toast.error(error.message);
+//       },
+//       onSuccess: async () => {
+//         await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
+//         router.push("/");
+//       },
+//     })
+//   );
+
+//   const form = useForm<z.infer<typeof registerSchema>>({
+//     mode: "all",
+//     resolver: zodResolver(registerSchema),
+//     defaultValues: {
+//       email: "",
+//       password: "",
+//       username: "",
+//     },
+//   });
+
+//   const onSubmit = (values: z.infer<typeof registerSchema>) => {
+//     register.mutate(values);
+//   };
+
+//   const username = form.watch("username");
+//   const usernameErrors = form.formState.errors.username;
+//   const showPreview = username && !usernameErrors;
+
+//   return (
+//     <div className="grid grid-cols-1 lg:grid-cols-5">
+//       <div className="bg-[#F4F4F0] h-screen w-full lg:col-span-3 overflow-y-auto">
+//         <Form {...form}>
+//           <form
+//             onSubmit={form.handleSubmit(onSubmit)}
+//             className="flex flex-col gap-8 p-4 lg:p-16"
+//           >
+//             {/* Header */}
+//             <div className="flex items-center justify-between mb-8">
+//               <Link href="/">
+//                 <span
+//                   className={cn("text-2xl font-semibold", poppins.className)}
+//                 >
+//                   funroad
+//                 </span>
+//               </Link>
+
+//               <Button
+//                 asChild
+//                 variant="ghost"
+//                 size="sm"
+//                 className="text-base border-none underline"
+//               >
+//                 <Link prefetch href="/sign-in">
+//                   Sign in
+//                 </Link>
+//               </Button>
+//             </div>
+
+//             <h1 className="text-4xl font-medium">
+//               Join over 1,580 creators earning money on Funroad.
+//             </h1>
+
+//             {/* Username */}
+//             <FormField
+//               name="username"
+//               render={({ field }) => {
+//                 const id = "username-field";
+
+//                 return (
+//                   <FormItem>
+//                     <FormLabel htmlFor={id} className="text-base">
+//                       Username
+//                     </FormLabel>
+
+//                     <FormControl>
+//                       <Input id={id} {...field} />
+//                     </FormControl>
+
+//                     <FormDescription
+//                       id={`${id}-description`}
+//                       className={cn("hidden", showPreview && "block")}
+//                     >
+//                       Your store will be available at{" "}
+//                       <strong>{username}</strong>.shop.com
+//                     </FormDescription>
+
+//                     <FormMessage />
+//                   </FormItem>
+//                 );
+//               }}
+//             />
+
+//             {/* Email */}
+//             <FormField
+//               name="email"
+//               render={({ field }) => {
+//                 const id = "email-field";
+
+//                 return (
+//                   <FormItem>
+//                     <FormLabel htmlFor={id} className="text-base">
+//                       Email
+//                     </FormLabel>
+
+//                     <FormControl>
+//                       <Input id={id} type="email" {...field} />
+//                     </FormControl>
+
+//                     <FormMessage />
+//                   </FormItem>
+//                 );
+//               }}
+//             />
+
+//             {/* Password */}
+//             <FormField
+//               name="password"
+//               render={({ field }) => {
+//                 const id = "password-field";
+
+//                 return (
+//                   <FormItem>
+//                     <FormLabel htmlFor={id} className="text-base">
+//                       Password
+//                     </FormLabel>
+
+//                     <FormControl>
+//                       <Input id={id} type="password" {...field} />
+//                     </FormControl>
+
+//                     <FormMessage />
+//                   </FormItem>
+//                 );
+//               }}
+//             />
+
+//             {/* Submit */}
+//             <Button
+//               disabled={register.isPending}
+//               type="submit"
+//               size="lg"
+//               variant="elevated"
+//               className="bg-black text-white hover:bg-pink-400 hover:text-primary"
+//             >
+//               Create Account
+//             </Button>
+//           </form>
+//         </Form>
+//       </div>
+
+//       {/* Right Side Image */}
+//       <div
+//         className="h-screen w-full lg:col-span-2 hidden lg:block"
+//         style={{
+//           backgroundImage: "url('/auth-bg.png')",
+//           backgroundSize: "cover",
+//           backgroundPosition: "center",
+//         }}
+//       />
+//     </div>
+//   );
+// };
